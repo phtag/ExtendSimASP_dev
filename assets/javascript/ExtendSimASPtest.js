@@ -145,7 +145,8 @@ function buttonClick()
 function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
 
-        alert('Got to here');
+    alert('Files selected=' + files.length);
+    // var reader = new FileReader();
     // files is a FileList of File objects. List some properties.
     for (var i = 0, f; f = files[i]; i++) {
       output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
@@ -153,10 +154,31 @@ function handleFileSelect(evt) {
                   f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                   '</li>');
     }
-    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+    // document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+    //   // Read in the image file as a data URL.
+    // reader.readAsText(document.querySelector('input').files[0]);
+    // console.log(reader);
+    // alert('Done reading');
+
+    fileInput = document.querySelector('input[type="file"]');
+    read(readTextFile);
   }
+function readTextFile(result) {
+    alert('Result=' + result);
+}
+function read(callback) {
+    var file = fileInput.files.item(0);
+    var reader = new FileReader();
+  
+    reader.onload = function() {
+      callback(reader.result);
+    }
+  
+    reader.readAsText(file);
+}
 alert('Open page');
 var files = document.getElementById('files');
+var fileInput = document.querySelector('input[type="file"]');
 files.addEventListener('change', handleFileSelect, false);
 //   document.addEventListener('click', select_element, true);
 // ExtendSimASP_login(ExtendSimASP_createScenarioFolder);
