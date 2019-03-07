@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-</head>
-<body>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script> -->
-    <script src="assets\javascript\app.js"></script>
+</head>
+<body>
     <div>
         <p>ExtendSim ASP test page</p>
+        <input type="file" id="files" name="files[]" multiple />
+        <output id="list"></output>
         <button id="submit-scenario-button" onclick="buttonClick()">Submit scenario</button>
-
     </div>
+    <script src="assets\javascript\ExtendSimASPtest.js"></script>
 </body>
 </html>

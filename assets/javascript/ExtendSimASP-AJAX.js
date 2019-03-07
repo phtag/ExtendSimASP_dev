@@ -1,6 +1,6 @@
 
-// var axios = require("axios");
-// var fs = require("fs");
+var axios = require("axios");
+var fs = require("fs");
 
 var scenarioFolderPathname;
 var scenarioFilenames = ['Resource Classes.txt',
@@ -9,7 +9,6 @@ var scenarioFilenames = ['Resource Classes.txt',
                          'Process Route.txt',
                          'Resource Requirement Expressions.txt',
                          'Resources.txt'];
-var output = [];
 
 const c_ExtendSimModelPath = "C:/Users/Administrator/Documents/ExtendSim10ASP_Prod/ASP/ASP Servers/ExtendSim Models/ASP example model (GS).mox"
 
@@ -141,23 +140,5 @@ function buttonClick()
     alert("Submitting scenario");
     ExtendSimASP_login(ExtendSimASP_createScenarioFolder);
 }
-
-function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-
-        alert('Got to here');
-    // files is a FileList of File objects. List some properties.
-    for (var i = 0, f; f = files[i]; i++) {
-      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                  f.size, ' bytes, last modified: ',
-                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                  '</li>');
-    }
-    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-  }
-alert('Open page');
-var files = document.getElementById('files');
-files.addEventListener('change', handleFileSelect, false);
-//   document.addEventListener('click', select_element, true);
 // ExtendSimASP_login(ExtendSimASP_createScenarioFolder);
 
