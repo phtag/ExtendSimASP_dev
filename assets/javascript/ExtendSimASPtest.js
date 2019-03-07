@@ -161,22 +161,24 @@ function handleFileSelect(evt) {
     // alert('Done reading');
 
     fileInput = document.querySelector('input[type="file"]');
-    read(readTextFile);
+    console.log(fileInput.files.length);
+    for (i=0;i<fileInput.files.length;i++) {
+        read(fileInput.files.item(i), readTextFile);
+    }
   }
 function readTextFile(result) {
-    alert('Result=' + result);
+    console.log(result);
 }
-function read(callback) {
-    var file = fileInput.files.item(0);
-    var reader = new FileReader();
-  
-    reader.onload = function() {
-      callback(reader.result);
-    }
-  
-    reader.readAsText(file);
+function read(file, callback) {
+    // var fileInput = document.querySelector('input[type="file"]');
+    // var file = fileInput.files.item(0);
+        var reader = new FileReader();
+        reader.onload = function() {
+            callback(reader.result);
+        }
+        reader.readAsText(file);
 }
-alert('Open page');
+// alert('Open page');
 var files = document.getElementById('files');
 var fileInput = document.querySelector('input[type="file"]');
 files.addEventListener('change', handleFileSelect, false);
