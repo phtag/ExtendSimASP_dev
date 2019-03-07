@@ -3,6 +3,9 @@
 // var fs = require("fs");
 
 var scenarioFolderPathname;
+var myheaders = { 
+    accept: "application/json", 
+};  
 var scenarioFilenames = ['Resource Classes.txt',
                          'Model Parameters.txt',
                          'Pools.txt',
@@ -43,6 +46,32 @@ function ExtendSimASP_login(login_callback) {
           login_callback(ExtendSimASP_copyModelToScenarioFolder);
     });
 }
+function ExtendSimASP_login_AJAX(login_callback) {
+    var queryURL = "https://184.171.246.58:8090/StreamingService/web/LoginToServer?username=admin&password=model";
+    // var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer";
+
+    var options_textPOST = {method : "POST",
+                  accept : "application/json",
+                  contentType: "application/json;charset=utf-8",
+                  headers : myheaders,
+                  muteHttpExceptions : false};
+      console.log('Give this a whirl');
+    $.ajax({
+        url: queryURL,
+        method: 'post',
+        accept : 'application/json',
+        contentType: 'application/json;charset=utf-8',
+        headers : myheaders,
+        data: {
+            username: 'admin',
+            password: 'model'
+        }
+      }).then(function(response) {
+          console.log('ExtendSimASP_login_AJAX: ' + response.data);
+        //   login_callback(ExtendSimASP_copyModelToScenarioFolder);
+    });
+}
+
 function ExtendSimASP_createScenarioFolder(createScenarioFolder_callback) {
     // Execute WCF service to create a scenario folder  
     var queryURL = "http://184.171.246.58:8090/StreamingService/web/CreateScenarioFolder?scenarioFoldername=myScenarioFolder"
@@ -139,7 +168,7 @@ function ExtendSimASP_sendFile(scenarioFolderPathname, filenames) {
 function buttonClick()
 {
     alert("Submitting scenario");
-    ExtendSimASP_login(ExtendSimASP_createScenarioFolder);
+    ExtendSimASP_login_AJAX(ExtendSimASP_createScenarioFolder);
 }
 
 function handleFileSelect(evt) {
@@ -166,7 +195,34 @@ function handleFileSelect(evt) {
         read(fileInput.files.item(i), readTextFile);
     }
   }
-function readTextFile(result) {
+function readTextFile(filename, result) {
+    console.log('readTextFile: entry - file=' + filename);
+    var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadPathname?filepathname=" + encodeURIComponent(scenarioFolderPathname + "/" + filename);
+    $.ajax({
+        url: queryURL,
+        method: 'post',
+        accept : "application/json",
+        contentType: "application/json;charset=utf-8",
+        headers : myheaders,
+        muteHttpExceptions : false
+    }).then(function(response) {
+        console.log('Uploaded pathname...');
+        var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadStream"
+        $.ajax({
+            url: queryURL,
+            method: 'post',
+            accept : 'application/json',
+            //    contentType: 'application/json;charset=utf-8',
+            contentType: 'multipart/form-data',
+            headers : myheaders,
+            data: result,
+            //    payload : result,
+            muteHttpExceptions : false
+        }).then(function(response) {
+            console.log('ExtendSimASP_sendFile: ' + response.data);
+        });   
+    }); 
+
     console.log(result);
 }
 function read(file, callback) {
@@ -174,8 +230,9 @@ function read(file, callback) {
     // var file = fileInput.files.item(0);
         var reader = new FileReader();
         reader.onload = function() {
-            callback(reader.result);
+            callback(file, reader.result);
         }
+        alert('File=' + file.name);
         reader.readAsText(file);
 }
 // alert('Open page');
