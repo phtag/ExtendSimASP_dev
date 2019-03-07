@@ -3,6 +3,13 @@ var axios = require("axios");
 var fs = require("fs");
 
 var scenarioFolderPathname;
+var scenarioFilenames = ['Resource Classes.txt',
+                         'Model Parameters.txt',
+                         'Pools.txt',
+                         'Process Route.txt',
+                         'Resource Requirement Expressions.txt',
+                         'Resources.txt'];
+
 const c_ExtendSimModelPath = "C:/Users/Administrator/Documents/ExtendSim10ASP_Prod/ASP/ASP Servers/ExtendSim Models/ASP example model (GS).mox"
 
 function ExtendSimASP_login(login_callback) {
@@ -84,47 +91,49 @@ function ExtendSimASP_copyModelToScenarioFolder(scenarioFolderPathname, copyMode
         headers : myheaders,
         muteHttpExceptions : false
     }).then(function(response) {
-        console.log('ExtendSimASP_copyModelToScenarioFolder: ' + response.data);
-        copyModelToScenarioFolder_callback(scenarioFolderPathname, 'Resource Classes.txt');
+        console.log('ExtendSimASP_copyModelToScenarioFolder: ' + response.data);                         ]
+        copyModelToScenarioFolder_callback(scenarioFolderPathname, scenarioFilenames);
     });
 
 }
-function ExtendSimASP_sendFile(scenarioFolderPathname, filename) {
-    fs.readFile(filename, 'utf8', function(error, result) {
-        if (error) {
-            console.log('Error' + error);
-        }
-        console.log('Result=' + result);
-        var myheaders = { 
-            accept: "application/json", 
-        };  
-        
-        var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadPathname?filepathname=" + encodeURIComponent(scenarioFolderPathname + "/" + filename);
-        axios({
-            url: queryURL,
-            method: 'post',
-            accept : "application/json",
-            contentType: "application/json;charset=utf-8",
-            headers : myheaders,
-            muteHttpExceptions : false
-        }).then(function(response) {
-            console.log('Uploaded pathname...');
-            var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadStream"
+function ExtendSimASP_sendFile(scenarioFolderPathname, filenames) {
+    filenames.forEach(function(filename) {
+        fs.readFile(filename, 'utf8', function(error, result) {
+            if (error) {
+                console.log('Error' + error);
+            }
+            console.log('Result=' + result);
+            var myheaders = { 
+                accept: "application/json", 
+            };  
+            
+            var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadPathname?filepathname=" + encodeURIComponent(scenarioFolderPathname + "/" + filename);
             axios({
-               url: queryURL,
-               method: 'post',
-               accept : 'application/json',
-            //    contentType: 'application/json;charset=utf-8',
-               contentType: 'multipart/form-data',
-               headers : myheaders,
-               data: result,
-            //    payload : result,
-               muteHttpExceptions : false
-           }).then(function(response) {
-               console.log('ExtendSimASP_sendFile: ' + response.data);
-           });   
-        }); 
-    })
+                url: queryURL,
+                method: 'post',
+                accept : "application/json",
+                contentType: "application/json;charset=utf-8",
+                headers : myheaders,
+                muteHttpExceptions : false
+            }).then(function(response) {
+                console.log('Uploaded pathname...');
+                var queryURL =  "http://184.171.246.58:8090/StreamingService/web/UploadStream"
+                axios({
+                url: queryURL,
+                method: 'post',
+                accept : 'application/json',
+                //    contentType: 'application/json;charset=utf-8',
+                contentType: 'multipart/form-data',
+                headers : myheaders,
+                data: result,
+                //    payload : result,
+                muteHttpExceptions : false
+            }).then(function(response) {
+                console.log('ExtendSimASP_sendFile: ' + response.data);
+            });   
+            }); 
+        })
+    });
 }
 ExtendSimASP_login(ExtendSimASP_createScenarioFolder);
 // ExtendSimASP_sendFile(ExtendSimASP_createScenarioFolder);
