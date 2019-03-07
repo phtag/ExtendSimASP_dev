@@ -114,9 +114,11 @@ function ExtendSimASP_sendFile(scenarioFolderPathname, filename) {
                url: queryURL,
                method: 'post',
                accept : 'application/json',
-               contentType: 'application/json;charset=utf-8',
+            //    contentType: 'application/json;charset=utf-8',
+               contentType: 'multipart/form-data',
                headers : myheaders,
-               payload : result,
+               data: result,
+            //    payload : result,
                muteHttpExceptions : false
            }).then(function(response) {
                console.log('ExtendSimASP_sendFile: ' + response.data);
