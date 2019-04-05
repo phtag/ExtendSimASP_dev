@@ -1,0 +1,23 @@
+{
+  "name": "ExtendSimASP_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ExtendSimASPtest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phtag/ExtendSimASP_dev.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phtag/ExtendSimASP_dev/issues"
+  },
+  "homepage": "https://github.com/phtag/ExtendSimASP_dev#readme",
+  "dependencies": {
+    "winax": "^1.0.17"
+  }
+}

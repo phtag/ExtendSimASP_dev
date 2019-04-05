@@ -2,9 +2,23 @@
 // var axios = require("axios");
 // var fs = require("fs");
 
+
+// Ext.Ajax.request({
+//     url: 'http://www.w3schools.com/cssref/css3_pr_text-shadow.asp',
+//     method: 'GET',
+//     headers: {
+//         'Access-Control-Allow-Origin': '*'
+//     },
+//     success: function(response) {
+//         console.log(response);
+//     }
+var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 var scenarioFolderPathname;
 var myheaders = { 
     accept: "application/json", 
+    crossDomain: true,
+    dataType: 'jsonp',
+    Methods: "GET, POST, PUT"
 };  
 var scenarioFilenames = ['Resource Classes.txt',
                          'Model Parameters.txt',
@@ -13,17 +27,14 @@ var scenarioFilenames = ['Resource Classes.txt',
                          'Resource Requirement Expressions.txt',
                          'Resources.txt'];
 var output = [];
-
 const c_ExtendSimModelPath = "C:/Users/Administrator/Documents/ExtendSim10ASP_Prod/ASP/ASP Servers/ExtendSim Models/ASP example model (GS).mox"
 
+alert("Got here");
 function ExtendSimASP_login(login_callback) {
     var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer?username=admin&password=model";
     // var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer";
 
     myMethod = "POST"   
-    var myheaders = { 
-              accept: "application/json", 
-      }; 
     
     var options_textPOST = {method : "POST",
                   accept : "application/json",
@@ -47,26 +58,33 @@ function ExtendSimASP_login(login_callback) {
     });
 }
 function ExtendSimASP_login_AJAX(login_callback) {
-    var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer?username=admin&password=model";
-    // var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer";
-
+// $.get(proxyUrl + targetUrl, function(data) {
+//    console.log(data);
+// }); 
+    // var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer?username=admin&password=model";
+    var queryURL = "localhost:3000/api/login/admin&model";
+// var queryURL = "http://184.171.246.58:8090/StreamingService/web/LoginToServer";
+    // var targetUrl = proxyUrl + queryURL;
+    var targetUrl =  queryURL;
     var options_textPOST = {method : "POST",
                   accept : "application/json",
                   contentType: "application/json;charset=utf-8",
                   headers : myheaders,
                   muteHttpExceptions : false};
       console.log('Give this a whirl');
+      alert("Logging in...");
     $.ajax({
-        url: queryURL,
-        method: 'post',
+        url: targetUrl,
+        method: 'get',
         accept : 'application/json',
         contentType: 'application/json;charset=utf-8',
-        headers : myheaders,
-        data: {
-            username: 'admin',
-            password: 'model'
-        }
-      }).then(function(response) {
+        headers : myheaders
+      }).then(function(error, response) {
+          if (error) {
+              alert("Big problem...");
+              console.log("ERROR: ExtendSimASP_login_AJAX - error=" + error);
+          }
+          alert("we logged in!!!");
           console.log('ExtendSimASP_login_AJAX: ' + response.data);
         //   login_callback(ExtendSimASP_copyModelToScenarioFolder);
     });
@@ -101,9 +119,6 @@ function ExtendSimASP_createScenarioFolder(createScenarioFolder_callback) {
 }
 function ExtendSimASP_copyModelToScenarioFolder(scenarioFolderPathname, copyModelToScenarioFolder_callback) {
       // Execute WCF service to copy the model folder to the scenario folder 
-    var myheaders = { 
-        accept: "application/json", 
-    };
     var options2 = {method : "POST",
         accept : "application/json",
         contentType: "application/json;charset=utf-8",
@@ -183,7 +198,7 @@ function handleFileSelect(evt) {
                   f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                   '</li>');
     }
-    // document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
     //   // Read in the image file as a data URL.
     // reader.readAsText(document.querySelector('input').files[0]);
     // console.log(reader);

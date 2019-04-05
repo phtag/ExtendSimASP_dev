@@ -26,7 +26,7 @@ function ExtendSimASP_login(login_callback) {
                   contentType: "application/json;charset=utf-8",
                   headers : myheaders,
                   muteHttpExceptions : false};
-      console.log('Give this a whirl');
+    console.log('Give this a whirl');
     axios({
         url: queryURL,
         method: 'post',

@@ -1,0 +1,6 @@
+var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+var targetUrl = queryURL;
+
+$.get(proxyUrl + targetUrl, function(data) {
+   console.log(data);
+}); 

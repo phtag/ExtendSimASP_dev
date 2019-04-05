@@ -1,6 +1,7 @@
 
 var axios = require("axios");
 var fs = require("fs");
+var winax = require("winax");
 
 var scenarioFolderPathname;
 var scenarioFilenames = ['Resource Classes.txt',

@@ -1,0 +1,1 @@
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\WebTemplates\MVC\VisualBasic\1033\Spav5.0\App_Start
